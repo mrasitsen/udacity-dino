@@ -74,8 +74,6 @@
         }
     ]
     
-    
-    // Create Dino Constructor
 
     function Dinosour(dino_data) {
         this.species = dino_data.species
@@ -87,13 +85,6 @@
         this.fact = dino_data.fact
     }
 
-    // Create Dino Objects
-
-    const object_list = dino_data.map(dino_data => new Dinosour(dino_data))
-    // console.log(dino_objects)
-
-
-    // Create Human Object
 
     function create_human(){
 
@@ -102,88 +93,155 @@
 
         return {
 
-
             name: document.getElementById("name").value,
-            feet: document.getElementById("feet").value,
+            weight: document.getElementById("weight").value,
             height : (feet_ * 12) + inch_,
             diet: document.getElementById("diet").value,
 
-            speak: function () {
-                console.log(`${this.name} says "I am a ${this.diet} and I weigh ${this.weight} pounds."`)
-            }
         } 
     }
-
-    // Use IIFE to get human data from form
-
-
-    // Create Dino Compare Method 1
-    // NOTE: Weight in JSON file is in lbs, height in inches. 
+ 
 
     function dino_compare_weight(dino, human) {
 
         if (dino.weight > human.weight) {
-            console.log(`${dino.species} is heavier than ${human.name}`)
+            let num = Math.round(dino.weight / human.weight)
+            return `${dino.species} is ${num} times heavier than ${human.name}`
         }
         else if (dino.weight < human.weight) {
-            console.log(`${dino.species} is lighter than ${human.name}`)
+            let num = Math.round(human.weight / dino.weight)
+            return `${dino.species} is ${num} times lighter than ${human.name}`
         }
         else {
-            console.log(`${dino.species} is the same weight as ${human.name}`)
+            return `${dino.species} is the same weight as ${human.name}`
         }
     }
     
-    // Create Dino Compare Method 2
-    // NOTE: Weight in JSON file is in lbs, height in inches.
 
     function dino_compare_height(dino, human) {
 
         if (dino.height > human.height) {
-            console.log(`${dino.species} is taller than ${human.name}`)
+            let num = Math.round(dino.height / human.height)
+            return `${dino.species} is ${num} times taller than ${human.name}`
         }
         else if (dino.height < human.height) {
-            console.log(`${dino.species} is shorter than ${human.name}`)
+            let num = Math.round(human.height / dino.height)
+            return `${dino.species} is ${num} times shorter than ${human.name}`
         }
         else {
-            console.log(`${dino.species} is the same height as ${human.name}`)
+            return `${dino.species} is the same height as ${human.name}`
         }
     }
-
-    
-    // Create Dino Compare Method 3
-    // NOTE: Weight in JSON file is in lbs, height in inches.
 
     function dino_compare_diet(dino, human) {
 
         if (dino.diet === human.diet) {
-            console.log(`${dino.species} is the same diet as ${human.name}`)
+            return `${dino.species} is the same diet as ${human.name}`
         }
         else {
-            console.log(`${dino.species} is not the same diet as ${human.name}`)
+            return `${dino.species} is not the same diet as ${human.name}`
         }
+    }
+
+
+    function create_fact(dino_obj, human_obj) {
+
+
+        if (dino_obj.species === 'Pigeon') {
+            return dino_obj.fact
+        }
+
+        let random_number =  Math.floor(Math.random() * 5)
+        let new_fact = ''
+
+        switch (random_number) {
+            case 0:
+                new_fact = dino_obj.fact
+                break;
+
+            case 1:
+                new_fact = 'The ' + dino_obj.species + ' was living in ' + dino_obj.where + '.'
+                break;
+
+            case 2:
+                new_fact = 'The ' + dino_obj.species + ' was living at ' + dino_obj.when + ' time.'
+                break;
+
+            case 3:
+                new_fact = dino_compare_diet(dino_obj, human_obj)
+                break;
+
+            case 4:
+                new_fact = dino_compare_weight(dino_obj, human_obj)
+                break;
+
+            case 5:
+                new_fact = dino_compare_height(dino_obj, human_obj)
+                break;
+        
+            default:
+                new_fact = 'No fact found.'
+                break;
+        }
+
+        return new_fact
     }
 
 
     function create_ui (){
 
-        var form = document.getElementById("dino-compare")
-        form.remove()
+        document.querySelector("form").style.display = "none"
 
-        object_list.splice(1,0,create_human())
+        const human = create_human()
+
+        const object_list = dino_data.map(dino_data => new Dinosour(dino_data))
+        object_list.forEach(dino_obj => { dino_obj.fact = create_fact(dino_obj, human)})
+        object_list.splice(4,0,human)
 
         console.log(object_list)
 
+        let grid;
+
+        for (let index = 0; index < 9; index++) {
+
+            if (index === 4) {
+                grid = create_human_grid(human)
+            }else{
+                grid = create_dino_grid(object_list[index])
+            }
+
+            document.getElementById("grid").appendChild(grid)
+        }
+
     }
-    // Generate Tiles for each Dino in Array
-  
-        // Add tiles to DOM
 
-    // Remove form from screen
+    function create_dino_grid(dino_obj){
 
+        let source = dino_obj.species.toLowerCase()
 
-// On button click, prepare and display infographic
+        const dino_grid = document.createElement("div")
+        dino_grid.className = "grid-item"
 
-document.getElementById('btn').addEventListener('click', create_ui())
+        dino_grid.innerHTML = `<h3>${dino_obj.species}</h3><img src="images/${dino_obj.species.toLowerCase()}.png" alt="${dino_obj.name}"><p>${dino_obj.fact}</p>`
+
+        return dino_grid
+    }
+
+    function create_human_grid(human_obj){
+
+        const human_grid = document.createElement("div")
+        human_grid.className = "grid-item"
+
+        human_grid.innerHTML = `<h3>${human_obj.name}</h3><img src="images/human.png" alt="${human_obj.name}">`
+
+        return human_grid
+
+    }
+
+    (function (){
+        document.getElementById('btn').addEventListener('click', create_ui)
+    })()
+
 
 
 
