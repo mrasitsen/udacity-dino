@@ -1,5 +1,7 @@
 
-    const dino_data = [
+    
+
+    const dino_data =  [
         {
             "species": "Triceratops",
             "weight": 13000,
@@ -73,6 +75,7 @@
             "fact": "All birds are living dinosaurs."
         }
     ]
+
     
 
     function Dinosour(dino_data) {
@@ -85,139 +88,121 @@
         this.fact = dino_data.fact
     }
 
-
-    function create_human(){
-
-        let inch_ = document.getElementById("inches").value
-        let feet_ = document.getElementById("feet").value
-
-        return {
-
-            name: document.getElementById("name").value,
-            weight: document.getElementById("weight").value,
-            height : (feet_ * 12) + inch_,
-            diet: document.getElementById("diet").value,
-
-        } 
+    function Human(){
+        this.name = document.getElementById("name").value
+        this.where = document.getElementById("where").value
+        this.when = document.getElementById("when").value
+        this.diet = document.getElementById("diet").value 
     }
  
 
-    function dino_compare_weight(dino, human) {
+    function dino_compare_name(dino, human) {
 
-        if (dino.weight > human.weight) {
-            let num = Math.round(dino.weight / human.weight)
-            return `${dino.species} is ${num} times heavier than ${human.name}`
-        }
-        else if (dino.weight < human.weight) {
-            let num = Math.round(human.weight / dino.weight)
-            return `${dino.species} is ${num} times lighter than ${human.name}`
+        if (dino.namet === human.name) {
+            return `${dino.species} does share a common name with ${human.name}`
         }
         else {
-            return `${dino.species} is the same weight as ${human.name}`
+            return `${dino.species} does not share a common name with ${human.name}`
         }
     }
     
 
-    function dino_compare_height(dino, human) {
+    function dino_compare_where(dino, human) {
 
-        if (dino.height > human.height) {
-            let num = Math.round(dino.height / human.height)
-            return `${dino.species} is ${num} times taller than ${human.name}`
-        }
-        else if (dino.height < human.height) {
-            let num = Math.round(human.height / dino.height)
-            return `${dino.species} is ${num} times shorter than ${human.name}`
+        if (dino.where === human.where) {
+            return `${dino.species} is from same place with ${human.name}`
         }
         else {
-            return `${dino.species} is the same height as ${human.name}`
+            return `${dino.species} is not from the same place with ${human.name}`
         }
     }
 
-    function dino_compare_diet(dino, human) {
+    function dino_compare_when(dino, human) {
 
-        if (dino.diet === human.diet) {
-            return `${dino.species} is the same diet as ${human.name}`
+        if (dino.when === human.when) {
+            return `${dino.species} is from the same era with ${human.name}`
         }
         else {
-            return `${dino.species} is not the same diet as ${human.name}`
+            return `${dino.species} is not from the same era with ${human.name}`
         }
     }
 
 
-    function create_fact(dino_obj, human_obj) {
+    function create_fact(dino_obj,human_obj,i){
+
+        let fact_arr = ['The name of this dino is ' + dino_obj.species
+                        ,'This dino was living at ' + dino_obj.where
+                        ,dino_compare_name(dino_obj, human_obj)
+                        ,dino_compare_where(dino_obj, human_obj)
+                        ,dino_compare_when(dino_obj, human_obj)
+                        ,'The name of this dino is ' + dino_obj.species
+                        ,'This dino was living at ' + dino_obj.where
+                    ]
+
+        return fact_arr[i]     
+    }
 
 
-        if (dino_obj.species === 'Pigeon') {
-            return dino_obj.fact
-        }
+    function create_dinos(dino_data, human_obj){
 
-        let random_number =  Math.floor(Math.random() * 5)
-        let new_fact = ''
+        let dino_arr = []
 
-        switch (random_number) {
-            case 0:
-                new_fact = dino_obj.fact
-                break;
-
-            case 1:
-                new_fact = 'The ' + dino_obj.species + ' was living in ' + dino_obj.where + '.'
-                break;
-
-            case 2:
-                new_fact = 'The ' + dino_obj.species + ' was living at ' + dino_obj.when + ' time.'
-                break;
-
-            case 3:
-                new_fact = dino_compare_diet(dino_obj, human_obj)
-                break;
-
-            case 4:
-                new_fact = dino_compare_weight(dino_obj, human_obj)
-                break;
-
-            case 5:
-                new_fact = dino_compare_height(dino_obj, human_obj)
-                break;
+  
         
-            default:
-                new_fact = 'No fact found.'
-                break;
+     
+        var x = 0
+        for(let i=6; i>=0; i--){
+            
+            let random_index = Math.floor(Math.random() * i)
+            let dino_obj = new Dinosour(dino_data[random_index])
+
+            dino_arr.push(dino_obj)
+            dino_arr[dino_arr.length-1].fact = create_fact(dino_obj, human_obj, x)
+            dino_data.splice(random_index, 1)
+            x++
         }
 
-        return new_fact
-    }
+        const dino_obj = new Dinosour(dino_data[0])
+        dino_arr.push(dino_obj)
 
+        return dino_arr
+    }
 
     function create_ui (){
 
-        document.querySelector("form").style.display = "none"
+        const human = new Human()
+        const object_list = create_dinos(dino_data, human)
+        
+        document.getElementById("dino-compare").remove()
 
-        const human = create_human()
-
-        const object_list = dino_data.map(dino_data => new Dinosour(dino_data))
-        object_list.forEach(dino_obj => { dino_obj.fact = create_fact(dino_obj, human)})
-        object_list.splice(4,0,human)
-
-        console.log(object_list)
 
         let grid;
 
-        for (let index = 0; index < 9; index++) {
+        for (var index=0; index < 4; index++) {
 
-            if (index === 4) {
-                grid = create_human_grid(human)
-            }else{
-                grid = create_dino_grid(object_list[index])
-            }
-
-            document.getElementById("grid").appendChild(grid)
+            grid = create_dino_grid(object_list[index])
+            append_child(grid)
         }
+
+        grid = create_human_grid(human)
+        append_child(grid)
+
+        for (var index=4; index < 8; index++) {
+
+            grid = create_dino_grid(object_list[index])
+            append_child(grid)
+        }
+
+
 
     }
 
-    function create_dino_grid(dino_obj){
 
-        let source = dino_obj.species.toLowerCase()
+    function append_child(grid){
+        document.getElementById("grid").appendChild(grid)
+    }
+
+    function create_dino_grid(dino_obj){
 
         const dino_grid = document.createElement("div")
         dino_grid.className = "grid-item"
@@ -238,9 +223,11 @@
 
     }
 
-    (function (){
-        document.getElementById('btn').addEventListener('click', create_ui)
-    })()
+
+    document.getElementById('btn').addEventListener('click', create_ui)
+   
+    
+ 
 
 
 
