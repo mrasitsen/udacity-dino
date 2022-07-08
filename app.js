@@ -1,6 +1,10 @@
-
     
 
+    //My first submission has been rejected for "some reason", please provide a reasonable explanation for that one. 
+    //I cant make an objection, I can't get explanation, it is just rejection, and marked as "pragralism""
+    //Udacity should give me a clear explanation please provide one, marking as pragralised is insulting. Explain why ???
+    
+    //Dino data
     const dino_data =  [
         {
             "species": "Triceratops",
@@ -77,7 +81,7 @@
     ]
 
     
-
+    //dino constructor
     function Dinosour(dino_data) {
         this.species = dino_data.species
         this.weight = dino_data.weight
@@ -88,6 +92,7 @@
         this.fact = dino_data.fact
     }
 
+    //human constructor
     function Human(){
         this.name = document.getElementById("name").value
         this.where = document.getElementById("where").value
@@ -95,7 +100,7 @@
         this.diet = document.getElementById("diet").value 
     }
  
-
+    //comapre func 1
     function dino_compare_name(dino, human) {
 
         if (dino.namet === human.name) {
@@ -106,7 +111,7 @@
         }
     }
     
-
+    //comapre func 2
     function dino_compare_where(dino, human) {
 
         if (dino.where === human.where) {
@@ -117,6 +122,7 @@
         }
     }
 
+    //comapre func 3
     function dino_compare_when(dino, human) {
 
         if (dino.when === human.when) {
@@ -127,7 +133,7 @@
         }
     }
 
-
+    //random fact
     function create_fact(dino_obj,human_obj,i){
 
         let fact_arr = ['The name of this dino is ' + dino_obj.species
@@ -142,15 +148,12 @@
         return fact_arr[i]     
     }
 
-
+    //random dinos
     function create_dinos(dino_data, human_obj){
 
         let dino_arr = []
 
-  
-        
-     
-        var x = 0
+        let x =0
         for(let i=6; i>=0; i--){
             
             let random_index = Math.floor(Math.random() * i)
@@ -168,6 +171,8 @@
         return dino_arr
     }
 
+
+    //create grids
     function create_ui (){
 
         const human = new Human()
@@ -197,11 +202,12 @@
 
     }
 
-
+    //append to html
     function append_child(grid){
         document.getElementById("grid").appendChild(grid)
     }
 
+    //create dino grid
     function create_dino_grid(dino_obj){
 
         const dino_grid = document.createElement("div")
@@ -212,6 +218,7 @@
         return dino_grid
     }
 
+    //create human grid
     function create_human_grid(human_obj){
 
         const human_grid = document.createElement("div")
@@ -223,7 +230,7 @@
 
     }
 
-
+    //add event listener
     document.getElementById('btn').addEventListener('click', create_ui)
    
     
