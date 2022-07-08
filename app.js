@@ -1,9 +1,4 @@
-    
 
-    //My first submission has been rejected for "some reason", please provide a reasonable explanation for that one. 
-    //I cant make an objection, I can't get explanation, it is just rejection, and marked as "pragralism""
-    //Udacity should give me a clear explanation please provide one, marking as pragralised is insulting. Explain why ???
-    
     //Dino data
     const dino_data =  [
         {
